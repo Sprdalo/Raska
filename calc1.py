@@ -136,7 +136,11 @@ class Interpreter(object):
                 y += right.value
                 self.current_token = self.get_next_token()
 
-            result += izracunaj(x, y, operator);
+
+            if x == 0:
+                result = izracunaj(result, y, operator);
+            else:
+                result += izracunaj(x, y, operator);
             test = True;
         return result;
 
