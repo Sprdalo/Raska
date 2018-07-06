@@ -9,7 +9,7 @@ def izracunaj(x, y, operator):
     if operator == 'PUTA':
         return (x * y);
     if operator == 'DELI':
-        return (x / y);
+        return (x // y);
     return 0;
 
 def convert(s):
@@ -99,6 +99,17 @@ class Interpreter(object):
 
     def expr(self):
 
+        if not self.text:
+            return 0;
+
+        tester = True
+        for i in self.text:
+            if not i.isdigit():
+                tester = False;
+
+        if tester:
+            return int(self.text);
+
         self.current_token = self.get_next_token()
 
         result = 0;
@@ -110,7 +121,7 @@ class Interpreter(object):
                 left = self.current_token
                 if self.eat(INTEGER) == False:
                     self.error()
-                
+
                 x = 0;
                 while self.eat(INTEGER) == True:
                     x *= 10;
@@ -144,6 +155,13 @@ class Interpreter(object):
             test = True;
         return result;
 
+def pozicije(text):
+    pos = [-1]
+    for i in range(len(text)):
+        if text[i] == '+' or text[i] == '-':
+            pos.append(i);
+    return pos;
+
 def main():
     while True:
         try:
@@ -152,7 +170,16 @@ def main():
             break
         if not text:
             continue
-        interpreter = Interpreter(text)
+
+        pos = pozicije(text);
+        tekst = "";
+        for i in range(len(pos) - 1):
+            interpreter = Interpreter(text[pos[i] + 1 : pos[i + 1]]);
+            tekst += str(interpreter.expr()) + text[pos[i + 1]];
+        interpreter = Interpreter(text[pos[len(pos) - 1] + 1 :])
+        tekst += str(interpreter.expr())
+
+        interpreter = Interpreter(tekst)
         result = interpreter.expr()
         print(result)
 
