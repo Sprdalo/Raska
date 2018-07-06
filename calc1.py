@@ -101,35 +101,43 @@ class Interpreter(object):
 
         self.current_token = self.get_next_token()
 
-        left = self.current_token
-        if self.eat(INTEGER) == False:
-            self.error()
-        
-        x = 0;
-        while self.eat(INTEGER) == True:
-            x *= 10;
-            left = self.current_token;
-            x += left.value
+        result = 0;
+        cnt = 0;
+
+        while not self.eat(EOF):
+
+            if cnt % 2 == 0:
+                left = self.current_token
+                if self.eat(INTEGER) == False:
+                    self.error()
+                
+                x = 0;
+                while self.eat(INTEGER) == True:
+                    x *= 10;
+                    left = self.current_token;
+                    x += left.value
+                    self.current_token = self.get_next_token()
+            else:
+                x = 0;
+            op = self.current_token
+
+            operator = convert(self.current_token.type);
+
             self.current_token = self.get_next_token()
 
-        op = self.current_token
+            right = self.current_token
+            if self.eat(INTEGER) == False:
+                self.error()
+            
+            y = 0;
+            while self.eat(INTEGER) == True:
+                y *= 10;
+                right = self.current_token;
+                y += right.value
+                self.current_token = self.get_next_token()
 
-        operator = convert(self.current_token.type);
-
-        self.current_token = self.get_next_token()
-
-        right = self.current_token
-        if self.eat(INTEGER) == False:
-            self.error()
-        
-        y = 0;
-        while self.eat(INTEGER) == True:
-            y *= 10;
-            right = self.current_token;
-            y += right.value
-            self.current_token = self.get_next_token()
-
-        result = izracunaj(x, y, operator);
+            result += izracunaj(x, y, operator);
+            cnt += 1;
         return result;
 
 def main():
