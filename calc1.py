@@ -102,11 +102,11 @@ class Interpreter(object):
         self.current_token = self.get_next_token()
 
         result = 0;
-        cnt = 0;
+        test = False;
 
         while not self.eat(EOF):
 
-            if cnt % 2 == 0:
+            if test == False:
                 left = self.current_token
                 if self.eat(INTEGER) == False:
                     self.error()
@@ -137,7 +137,7 @@ class Interpreter(object):
                 self.current_token = self.get_next_token()
 
             result += izracunaj(x, y, operator);
-            cnt += 1;
+            test = True;
         return result;
 
 def main():
