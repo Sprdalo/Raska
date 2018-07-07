@@ -82,6 +82,16 @@ class Interpreter(object):
             self.pos += 1
             return token
 
+        if current_char == '<':
+            token = Token(MANJE, current_char)
+            self.pos += 1
+            return token
+
+        if current_char == '>':
+            token = Token(VECE, current_char)
+            self.pos += 1
+            return token
+        print("get next token error")
         self.error()
 
     def eat(self, token_type):
@@ -128,6 +138,7 @@ class Interpreter(object):
                 if test == False and self.eat('VAR') == False:
                     left = self.current_token
                     if self.eat(INTEGER) == False:
+                        print("left error")
                         self.error()
 
                     x = 0;
@@ -150,6 +161,7 @@ class Interpreter(object):
 
             right = self.current_token
             if self.eat(INTEGER) == False:
+                print("right error")
                 self.error()
             
             y = 0;
