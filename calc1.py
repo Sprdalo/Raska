@@ -62,6 +62,11 @@ class Interpreter(object):
             self.pos += 1
             return token
 
+        if is_letter(current_char) == True:
+            token = Token(VAR, current_char)
+            self.pos += 1
+            return token
+
         if current_char == '*':
             token = Token(PUTA, current_char)
             self.pos += 1
@@ -83,6 +88,11 @@ class Interpreter(object):
         if self.current_token.type == SPACE:
             self.current_token = self.get_next_token();
             return self.eat(token_type);
+
+        if token_type == VAR:
+            if is_letter(self.text) == True:
+                return True
+            return False;
 
         if self.current_token.type == token_type:
             return True;
@@ -106,27 +116,39 @@ class Interpreter(object):
         self.current_token = self.get_next_token()
 
         result = 0;
+        x = -1.1
         test = False;
 
         while not self.eat(EOF):
 
-            if test == False:
-                left = self.current_token
-                if self.eat(INTEGER) == False:
-                    self.error()
+            #print(self.text);
 
-                x = 0;
-                while self.eat(INTEGER) == True:
-                    x *= 10;
-                    left = self.current_token;
-                    x += left.value
-                    self.current_token = self.get_next_token()
+            if len(self.text) == 1 and self.eat('VAR') == True:
+                x = mapa[self.text];
+                return x;
             else:
-                x = 0;
+                if test == False and self.eat('VAR') == False:
+                    left = self.current_token
+                    if self.eat(INTEGER) == False:
+                        self.error()
+
+                    x = 0;
+                    while self.eat(INTEGER) == True:
+                        x *= 10;
+                        left = self.current_token;
+                        x += left.value
+                        self.current_token = self.get_next_token()
+                else:
+                    if self.eat('VAR') == False:
+                        x = 0;
+                    else:
+                        x = mapa[self.text];
+                        #self.current_token = self.get_next_token();
+
             op = self.current_token
 
             operator = convert(self.current_token.type);
-
+            #print(self.current_token.type);
             self.current_token = self.get_next_token()
 
             right = self.current_token
@@ -161,7 +183,8 @@ def main():
             if (text.startswith("int ")):
                 par = segment(text);
 
-                declaraction = Declaraction(text[par[0] + 1: par[1] + 3], text[(par[1] + 5) :]);
+                declaraction = Declaraction(text[par[0] + 1: par[1] + 2], text[(par[1] + 5) :]);
+                
                 text = text[(par[1] + 5) :];
 
         text = clean(text);

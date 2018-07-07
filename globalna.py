@@ -45,3 +45,13 @@ def segment(text):
             if r == -1 and l != -1:
                 r = i;
     return (l, r);
+
+def is_letter(text):
+    if len(text) > 1:
+        return False
+
+    if (text >= 'a' and text <= 'z') or (text >= 'A' and text <= 'Z'):
+        return True
+    return False;
+
+
