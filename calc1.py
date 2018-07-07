@@ -162,6 +162,9 @@ def pozicije(text):
             pos.append(i);
     return pos;
 
+def clean(text):
+    return text.replace(" ", "");
+
 def main():
     while True:
         try:
@@ -170,6 +173,7 @@ def main():
             break
         if not text:
             continue
+        text = clean(text);
 
         pos = pozicije(text);
         tekst = "";
