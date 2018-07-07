@@ -46,6 +46,7 @@ class Token(object):
         return self.__str__()
 
 mapa = {}
+
 class Declaraction(object):
     def __init__(self, name, v):
 
@@ -57,7 +58,6 @@ class Declaraction(object):
         self.value = interpreter.expr();
         self.name = name;
         mapa[name] = self.value;
-        print(mapa[name]);
 
 class Interpreter(object):
     def __init__(self, text):
@@ -66,7 +66,7 @@ class Interpreter(object):
         self.current_token = None
 
     def error(self):
-        raise Exception('Error parsing input')
+        raise Exception('Greska pri parsiranju unosa')
 
     def get_next_token(self):
         text = self.text
@@ -206,10 +206,9 @@ def main():
         if is_type(text):
             if (text.startswith("int ")):
                 par = segment(text);
-                #print(par[0]);
+
                 declaraction = Declaraction(text[par[0] + 1: par[1] + 3], text[(par[1] + 5) :]);
-                #print(declaraction.value);
-            continue;
+                text = text[(par[1] + 5) :];
 
         text = clean(text);
 
