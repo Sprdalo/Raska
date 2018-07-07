@@ -63,6 +63,7 @@ class Interpreter(object):
             return token
 
         if is_letter(current_char) == True:
+            print("TF",current_char);
             token = Token(VAR, current_char)
             self.pos += 1
             return token
@@ -162,7 +163,6 @@ class Interpreter(object):
                 y += right.value
                 self.current_token = self.get_next_token()
 
-
             if x == 0:
                 result = izracunaj(result, y, operator);
             else:
@@ -171,6 +171,10 @@ class Interpreter(object):
         return result;
 
 def main():
+    interpreter = Interpreter("a*2");
+    interpreter.get_next_token();
+    print(interpreter.text);
+
     while True:
         try:
             text = input('calc> ')
