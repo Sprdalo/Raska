@@ -4,12 +4,21 @@ def izracunaj(x, y, operator):
     if operator == 'MINUS':
         return (x - y);
     if operator == 'PLUS':
+        print("stigo do PLUS")
         return (x + y);
     if operator == 'PUTA':
         return (x * y);
     if operator == 'DELI':
         return (x // y);
-    return 0;
+    if operator == '<':
+        print('stigo do MANJE')
+        return (x < y);
+    if operator == '>':
+        print('stigo do VISE')
+        return (x > y);
+    else:
+        print("izracunaj greska")
+        return 0;
 
 def clean(text):
     return text.replace(" ", "");
@@ -23,7 +32,10 @@ def convert(s):
         return 'PUTA'
     if s == DELI:
         return 'DELI'
-
+    if s == MANJE:
+        return 'MANJE'
+    if s == VECE:
+        return 'VECE'
 def is_type(text):
     if text.startswith("bool ") or text.startswith("int "):
         return True;
