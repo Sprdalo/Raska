@@ -63,7 +63,6 @@ class Interpreter(object):
             return token
 
         if is_letter(current_char) == True:
-            print("TF",current_char);
             token = Token(VAR, current_char)
             self.pos += 1
             return token
@@ -122,8 +121,6 @@ class Interpreter(object):
 
         while not self.eat(EOF):
 
-            #print(self.text);
-
             if len(self.text) == 1 and self.eat('VAR') == True:
                 x = mapa[self.text];
                 return x;
@@ -149,7 +146,6 @@ class Interpreter(object):
             op = self.current_token
 
             operator = convert(self.current_token.type);
-            #print(self.current_token.type);
             self.current_token = self.get_next_token()
 
             right = self.current_token
@@ -171,9 +167,6 @@ class Interpreter(object):
         return result;
 
 def main():
-    interpreter = Interpreter("a*2");
-    interpreter.get_next_token();
-    print(interpreter.text);
 
     while True:
         try:
