@@ -1,5 +1,5 @@
 INTEGER, PLUS, EOF, SPACE, MINUS, PUTA, DELI = 'INTEGER', 'PLUS', 'EOF', 'SPACE', 'MINUS', 'PUTA', 'DELI'
-ZNAK = 'ZNAK'
+ZNAK, BOOL = 'ZNAK', 'BOOL'
 
 def izracunaj(x, y, operator):
     if operator == 'MINUS':
@@ -12,6 +12,9 @@ def izracunaj(x, y, operator):
         return (x // y);
     return 0;
 
+def clean(text):
+    return text.replace(" ", "");
+
 def convert(s):
     if s == PLUS:
         return 'PLUS'
@@ -21,6 +24,11 @@ def convert(s):
         return 'PUTA'
     if s == DELI:
         return 'DELI'
+
+def is_type(text):
+    if text.startswith("bool ") or text.startswith("int "):
+        return True;
+    return False;
 
 class Token(object):
     def __init__(self, type, value):
@@ -37,6 +45,19 @@ class Token(object):
     def __repr__(self):
         return self.__str__()
 
+mapa = {}
+class Declaraction(object):
+    def __init__(self, name, v):
+
+        if name in mapa:
+            raise Exception('Vec inicijalizovana vrednost');
+
+        v = clean(v);
+        interpreter = Interpreter(v);
+        self.value = interpreter.expr();
+        self.name = name;
+        mapa[name] = self.value;
+        print(mapa[name]);
 
 class Interpreter(object):
     def __init__(self, text):
@@ -99,6 +120,7 @@ class Interpreter(object):
 
     def expr(self):
 
+        self.text = clean(self.text);
         if not self.text:
             return 0;
 
@@ -162,8 +184,15 @@ def pozicije(text):
             pos.append(i);
     return pos;
 
-def clean(text):
-    return text.replace(" ", "");
+def segment(text):
+    l = -1; r = -1;
+    for i in range(len(text)):
+        if text[i] == ' ':
+            if l == -1:
+                l = i;
+            if r == -1 and l != -1:
+                r = i;
+    return (l, r);
 
 def main():
     while True:
@@ -173,6 +202,15 @@ def main():
             break
         if not text:
             continue
+
+        if is_type(text):
+            if (text.startswith("int ")):
+                par = segment(text);
+                #print(par[0]);
+                declaraction = Declaraction(text[par[0] + 1: par[1] + 3], text[(par[1] + 5) :]);
+                #print(declaraction.value);
+            continue;
+
         text = clean(text);
 
         pos = pozicije(text);
